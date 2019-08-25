@@ -113,8 +113,8 @@ public static class DoorFactory
 And then it can be used as
 ```C#
 var door = DoorFactory.MakeDoor(80, 30);
-Console.WriteLine("Height of Door : {0}", door.GetHeight());
-Console.WriteLine("Width of Door : {0}", door.GetWidth());
+Console.WriteLine($"Height of Door : {door.GetHeight()}");
+Console.WriteLine($"Width of Door : {door.GetWidth()}");
 ```
 
 **When to Use?**
@@ -378,7 +378,7 @@ class Burger
   public string GetDescription()
   {
     var sb = new StringBuilder();
-    sb.Append(String.Format("This is {0} inch Burger. ", this.mSize));
+    sb.Append($"This is {this.mSize} inch Burger. ");
     return sb.ToString();
   }
 }
@@ -490,10 +490,8 @@ var cloned = original.Clone();
 cloned.Name = "Dolly";
 Console.WriteLine(cloned.Name); // Dolly
 Console.WriteLine(cloned.Category); // Mountain Sheep
-Console.WriteLine(original.Name); // Dolly
+Console.WriteLine(original.Name); // Jolly
 ```
-
-Also you could use the magic method `__clone` to modify the cloning behavior.
 
 **When to use?**
 
@@ -526,7 +524,7 @@ public class President
   }
 
   // Public constructor
-  public static President get_instance()
+  public static President GetInstance()
   {
     if (instance == null) {
       instance = new President();
@@ -537,10 +535,10 @@ public class President
 ```
 Then in order to use
 ```C#
-President a = President.get_instance();
-President b = President.get_instance();
+President a = President.GetInstance();
+President b = President.GetInstance();
 
-Console.WriteLine((a==b).ToString()); //Output : true
+Console.WriteLine(a == b); //Output : true
 ```
 
 Structural Design Patterns
@@ -588,7 +586,7 @@ class AfricanLion : ILion
 {
   public void Roar()
   {
-      
+
   }
 }
 
@@ -596,7 +594,7 @@ class AsiaLion : ILion
 {
   public void Roar()
   {
-      
+
   }
 }
 ```
@@ -680,7 +678,7 @@ class About : IWebPage
 
   public string GetContent()
   {
-    return String.Format("About page in {0}",theme.GetColor());
+    return $"About page in {theme.GetColor()}";
   }
 }
 
@@ -695,7 +693,7 @@ class Careers : IWebPage
 
   public string GetContent()
   {
-    return String.Format("Careers page in {0}",theme.GetColor());
+    return $"Careers page in {theme.GetColor()}";
   }
 }
 ```
@@ -734,12 +732,13 @@ class AquaTheme : ITheme
 And both the hierarchies
 ```C#
 var darkTheme = new DarkTheme();
+var lightTheme = new LightTheme();
 
 var about= new About(darkTheme);
-var careers = new Careers(darkTheme);
+var careers = new Careers(lightTheme);
 
-Console.WriteLine(about.GetContent());
-Console.WriteLine(careers.GetContent());
+Console.WriteLine(about.GetContent()); //Output: About page in Dark Black
+Console.WriteLine(careers.GetContent()); //Output: Careers page in Off White
 ```
 
 🌿 Composite
@@ -861,9 +860,9 @@ var designer = new Designer("Arya", 5000);
 var organization = new Organization();
 organization.AddEmployee(developer);
 organization.AddEmployee(designer);
-//Act
-Console.WriteLine("Net Salary of Emmployees in Organization is {0:c}", organization.GetNetSalaries());
 
+Console.WriteLine($"Net Salary of Employees in Organization is {organization.GetNetSalaries():c}");
+//Ouptut: Net Salary of Employees in Organization is $10000.00
 ```
 
 ☕ Decorator
@@ -968,20 +967,20 @@ Lets make a coffee now
 
 ```C#
 var myCoffee = new SimpleCoffee();
-Console.WriteLine("{0:c}",myCoffee.GetCost()); // $ 5.00
-Console.WriteLine("{0}", myCoffee.GetDescription()); // Simple Coffee
+Console.WriteLine($"{myCoffee.GetCost():c}"); // $ 5.00
+Console.WriteLine(myCoffee.GetDescription()); // Simple Coffee
 
 var milkCoffee = new MilkCoffee(myCoffee);
-Console.WriteLine("{0:c}", milkCoffee.GetCost()); // $ 6.00
-Console.WriteLine("{0}", milkCoffee.GetDescription()); // Simple Coffee, milk
+Console.WriteLine($"{milkCoffee.GetCost():c}"); // $ 6.00
+Console.WriteLine(milkCoffee.GetDescription()); // Simple Coffee, milk
 
 var whipCoffee = new WhipCoffee(milkCoffee);
-Console.WriteLine("{0:c}", whipCoffee.GetCost()); // $ 7.00
-Console.WriteLine("{0}", whipCoffee.GetDescription()); // Simple Coffee, milk, whip
+Console.WriteLine($"{whipCoffee.GetCost():c}"); // $ 7.00
+Console.WriteLine(whipCoffee.GetDescription()); // Simple Coffee, milk, whip
 
 var vanillaCoffee = new VanillaCoffee(whipCoffee);
-Console.WriteLine("{0:c}", vanillaCoffee.GetCost()); // $ 8.00
-Console.WriteLine("{0}", vanillaCoffee.GetDescription()); // Simple Coffee, milk, whip
+Console.WriteLine($"{vanillaCoffee.GetCost():c}"); // $ 8.00
+Console.WriteLine(vanillaCoffee.GetDescription()); // Simple Coffee, milk, whip, vanilla
 ```
 
 📦 Facade
@@ -1136,7 +1135,7 @@ class TeaShop
   public void Serve()
   {
     foreach(var table  in mOrders.Keys){
-      Console.WriteLine("Serving Tea to table # {0}", table);
+      Console.WriteLine($"Serving Tea to table # {table}");
     }
   }
 }
@@ -1217,7 +1216,7 @@ class SecuredDoor
 
   private bool Authenticate(string password)
   {
-    return password == "$ecr@t" ? true : false;
+    return password == "$ecr@t";
   }
 
   public void Close()
@@ -1287,11 +1286,11 @@ abstract class Account
   {
     if (CanPay(amountTopay))
     {
-      Console.WriteLine("Paid {0:c} using {1}.", amountTopay, this.GetType().Name);
+      Console.WriteLine($"Paid {amountTopay:c} using {this.GetType().Name}.");
     }
     else if (this.mSuccessor != null)
     {
-      Console.WriteLine("Cannot pay using {0}. Proceeding..", this.GetType().Name);
+      Console.WriteLine($"Cannot pay using {this.GetType().Name}. Proceeding..");
       mSuccessor.Pay(amountTopay);
     }
     else
@@ -1301,7 +1300,7 @@ abstract class Account
   }
   private bool CanPay(decimal amount)
   {
-    return mBalance >= amount ? true : false;
+    return mBalance >= amount;
   }
 }
 
@@ -1477,7 +1476,7 @@ Command pattern can also be used to implement a transaction based system. Where 
 --------
 
 Real world example
-> An old radio set will be a good example of iterator, where user could start at some channel and then use next or previous buttons to go through the respective channels. Or take an example of MP3 player or a TV set where you could press the next and previous buttons to go through the consecutive channels or in other words they all provide an interface to iterate through the respective channels, songs or radio stations.  
+> An old radio set will be a good example of iterator, where user could start at some channel and then use next or previous buttons to go through the respective channels. Or take an example of MP3 player or a TV set where you could press the next and previous buttons to go through the consecutive channels or in other words they all provide an interface to iterate through the respective channels, songs or radio stations.
 
 In plain words
 > It presents a way to access the elements of an object without exposing the underlying presentation.
@@ -1487,7 +1486,7 @@ Wikipedia says
 
 **Programmatic example**
 
-In C# it can be done by implementing IEnumerable and IEnumerator. Translating our radio stations example from above. First of all we have `RadioStation`
+In C# it can be done by implementing IEnumerable<T>. Translating our radio statiIons example from above. First of all we have `RadioStation`
 
 ```C#
 class RadioStation
@@ -1510,62 +1509,41 @@ class RadioStation
 Then we have our iterator
 
 ```C#
-class StationList : IEnumerable
+class StationList : IEnumerable<RadioStation>
 {
-  private List<RadioStation> mStations;
+  List<RadioStation> mStations = new List<RadioStation>();
 
-  public StationList()
+  public RadioStation this[int index]
   {
-    mStations = new List<RadioStation>();
+    get { return mStations[index]; }
+    set { mStations.Insert(index, value); }
   }
 
-  public void AddStation(RadioStation station)
+  public void Add(RadioStation station)
   {
     mStations.Add(station);
   }
 
-  public void RemoveStation(RadioStation station)
+  public void Remove(RadioStation station)
   {
     mStations.Remove(station);
   }
 
-  public IEnumerator GetEnumerator()
+  public IEnumerator<RadioStation> GetEnumerator()
   {
-    return new StationIterator(mStations);
+    return this.GetEnumerator();
   }
-}
 
-class StationIterator : IEnumerator
-{
-  private List<RadioStation> mStations;
-  private int currentPosition = -1;
-
-  public object Current
+  IEnumerator IEnumerable.GetEnumerator()
   {
-    get
+    //Use can switch to this internal collection if you do not want to transform
+    //return mStations.GetEnumerator();
+
+    //use this if you want to transform the object before rendering
+    foreach (var x in mStations)
     {
-      return mStations[currentPosition];
+      yield return x;
     }
-  }
-
-  public StationIterator(List<RadioStation> stations)
-  {
-    mStations = stations;
-  }
-  public bool MoveNext()
-  {
-    if(currentPosition < mStations.Count - 1)
-    {
-      currentPosition = currentPosition + 1;
-      return true;
-    }
-
-    return false;
-  }
-
-  public void Reset()
-  {
-    currentPosition = -1;
   }
 }
 ```
@@ -1573,20 +1551,23 @@ And then it can be used as
 ```C#
 var stations = new StationList();
 var station1 = new RadioStation(89);
-stations.AddStation(station1);
+stations.Add(station1);
 
 var station2 = new RadioStation(101);
-stations.AddStation(station2);
+stations.Add(station2);
 
 var station3 = new RadioStation(102);
-stations.AddStation(station3);
+stations.Add(station3);
 
-foreach(RadioStation station in stations)
+foreach(var x in stations)
 {
-    Console.WriteLine(station.GetFrequecy());
+  Console.Write(x.GetFrequecy());
 }
 
-stations.RemoveStation(station2); // Will Remove station 101
+var q = stations.Where(x => x.GetFrequecy() == 89).FirstOrDefault();
+Console.WriteLine(q.GetFrequecy());
+
+Console.ReadLine();
 ```
 
 👽 Mediator
@@ -1618,7 +1599,7 @@ class ChatRoom : IChatRoomMediator
 {
   public void ShowMessage(User user, string message)
   {
-    Console.WriteLine("{0} [{1}]:{2}", DateTime.Now.ToString("MMMM dd, H:mm"), user.GetName(), message);
+    Console.WriteLine($"{DateTime.Now.ToString("MMMM dd, H:mm")} [{user.GetName()}]:{message}");
   }
 }
 ```
@@ -1751,7 +1732,7 @@ editor.Type("This is second.");
 editor.Save();
 
 //Type some more
-editor.Type("This is thrid.");
+editor.Type("This is third.");
 
 //Output the content
 Console.WriteLine(editor.Content); // This is the first sentence. This is second. This is third.
@@ -1810,7 +1791,7 @@ class JobSeeker : IObserver<JobPost>
 
   public void OnNext(JobPost value)
   {
-    Console.WriteLine("Hi {0} ! New job posted: {1}", Name, value.Title);
+    Console.WriteLine($"Hi {Name} ! New job posted: {value.Title}");
   }
 }
 ```
@@ -1933,7 +1914,7 @@ class Monkey : IAnimal
 
   public void Accept(IAnimalOperation operation)
   {
-    throw new NotImplementedException();
+      operation.VisitMonkey(this);
   }
 }
 
@@ -1946,7 +1927,7 @@ class Lion : IAnimal
 
   public void Accept(IAnimalOperation operation)
   {
-    throw new NotImplementedException();
+      operation.VisitLion(this);
   }
 }
 
@@ -1959,7 +1940,7 @@ class Dolphin : IAnimal
 
   public void Accept(IAnimalOperation operation)
   {
-    throw new NotImplementedException();
+      operation.VisitDolphin(this);
   }
 }
 ```
@@ -1992,7 +1973,7 @@ var dolphin = new Dolphin();
 
 var speak = new Speak();
 
-monkey.Accept(speak);    // Ooh oo aa aa!    
+monkey.Accept(speak);    // Ooh oo aa aa!
 lion.Accept(speak);      // Roaaar!
 dolphin.Accept(speak);   // Tuut tutt tuutt!
 
@@ -2095,7 +2076,7 @@ And it can be used as
 ```C#
 var unSortedList = new List<int> { 1, 10, 2, 16, 19 };
 
-var sorter = new Sorter(new QuickSortStrategy());
+var sorter = new Sorter(new BubbleSortStrategy());
 sorter.Sort(unSortedList); // // Output : Sorting using Bubble Sort !
 
 sorter = new Sorter(new QuickSortStrategy());
